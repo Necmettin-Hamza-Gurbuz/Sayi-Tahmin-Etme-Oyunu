@@ -27,13 +27,14 @@ def check_guess():
         if deneme_hakki == 0:
             feedback = "Maalesef hakkın doldu. Doğru sayı: " + str(rastgele)
             btn_guess.config(state=tk.DISABLED)
+            btn_retry.config(state=tk.NORMAL)
 
         lbl_feedback.config(text=feedback)
         lbl_attempts.config(text="Kalan Deneme Hakkı: " + str(deneme_hakki))
 
         if yanlis_tahminler:
             lbl_wrong_guesses.config(text="Yanlış Tahminler: " + ", ".join(yanlis_tahminler))
-        
+
     except ValueError:
         messagebox.showwarning("Hatalı Giriş", "Lütfen geçerli bir sayı giriniz.")
 
@@ -49,9 +50,17 @@ def start_game():
     lbl_wrong_guesses.config(text="")
     lbl_feedback.config(text="")
     btn_guess.config(state=tk.NORMAL)
+    btn_retry.config(state=tk.DISABLED)
+
+def play_again():
+    btn_guess.config(state=tk.NORMAL)
+    btn_retry.config(state=tk.DISABLED)
+    lbl_wrong_guesses.config(text="")
+    lbl_feedback.config(text="")
+    start_game()
 
 def create_game_window():
-    global entry_guess, entry_attempts, lbl_attempts, lbl_feedback, lbl_wrong_guesses, btn_guess
+    global entry_guess, entry_attempts, lbl_attempts, lbl_feedback, lbl_wrong_guesses, btn_guess, btn_retry
 
     window = tk.Tk()
     window.title("Sayı Tahmin Oyunu")
@@ -91,6 +100,9 @@ def create_game_window():
 
     lbl_wrong_guesses = tk.Label(frame, text="", font=("Arial", 12))
     lbl_wrong_guesses.pack()
+
+    btn_retry = tk.Button(frame, text="Tekrar Oyna", font=("Arial", 12), command=play_again, state=tk.DISABLED)
+    btn_retry.pack()
 
     window.mainloop()
 
